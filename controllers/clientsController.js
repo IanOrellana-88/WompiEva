@@ -1,4 +1,4 @@
-import clientsModel from "../models/clientsModel.js";
+import clientsModel from "../models/clients.js";
 
 const clientsController = {};
 
