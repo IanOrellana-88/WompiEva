@@ -1,6 +1,6 @@
 import {Schema, model} from "mongoose";
 
-const adminsSchema = new Schema({
+const clientsSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
@@ -14,4 +14,4 @@ const adminsSchema = new Schema({
 },
 );
 
-export default model("Admin", adminsSchema);
+export default model("Client", clientsSchema);
