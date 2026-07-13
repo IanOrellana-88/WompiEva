@@ -1,55 +1,62 @@
 import ticketsModel from "../models/tickets.js";
-import clientsModel from "../models/clients.js";
 
-const ticketsController = {};
+const ticketsControllers = {};
 
-ticketsController.getTickets = async (req, res) => {
-    try{
-        const tickets = await ticketsModel
-        .find()
-        .populate("customerId", "name email")
-        .populate("clients, clientId", "name price");
-
-        return res.status(200).json(tickets);
-    } catch (error){
-        console.log("error"+error);
-        return res.status(500).json({message: "Internal server error"});
-    }
-        
-
-    ticketsController.createTicket = async (req, res) => { 
-        try {
-            const ticket = await ticketsModel 
-            .findById(req.params.id)
-            .populate("customerId", "name email")
-            .populate("clientId", "name price");
-if (!ticket) {
-    return res.status(404).json({message: "Ticket not found"});
+//Select
+ticketsControllers.getTickets = async (req, res) => {
+    try {
+        const tickets = await ticketsModel.find();
+        return res.status(200).json(clients);
+} catch (error){
+    console.log("error"+error);
+    return res.status(500).json({message: "Interal server error"})
 }
+};
+//update
+ticketsControllers.updateTicket = async (req, res) => {
+  try {
+    let {
+        customerId, quantity, pursacheDate, isVerified, timeOut
+    } =req.body;
+  
+    name=name?.trim();
+    email=email.trim();
 
-return res.status(200).json(ticket);
-        } catch (error){
-            console.log("error"+error);
-            return res.status(500).json({message: "Internal server error"});
-        } 
-    };
+    if (!customerId || !quantity || !pursacheDate){
+        return res.status (400).json({message: "Field required"});
+    }
 
-    ticketsController.insertTicket = async (req, res) => {
-        try {
-            const {customerId, clientId, purchaseDate, price} = req.body;
+    const ticketsUpdated = await ticketsModel.findByIdAndUpdate(
+        req.params.id,
+        {customerId, quantity, pursacheDate, isVerified, timeOut},
+        {new: true},
+    );
 
-            let total = 0;
+    if (!ticketsUpdated){
+        return res.status (404).json({message: "Tickets Not Found"});
+    }
 
-            let newClient = await clientsModel.findById(clientId);
+    return res.status(200).json({message: "Ticket Updated"});
+} catch (error){
+    console.log("error"+error);
+    return res.status(500).json({message: "Internal Server Error"})
+}
+};
 
-            for (let i = 0; i < newClient.length; i++) {
-                const subtotal = newClient[i].price * newClient[i].quantity;
+//delete
+ticketsControllers.deleteTickets = async (req, res) => {
+    try {
+        const deleteTickets = ticketsModel.findByIdAndDelete (req.params.id);
 
-                total =  subtotal;
-                newTicket.push({
-                    customerId,
-                    clientId: newClient[i]._id,
-                    purchaseDate,
-                    price: subtotal,
-                });
-            }
+        if (!deleteTickets) {
+            return res.status(404).json({message: "Ticket not found"});
+        }
+        return res.status(200).json({message: "Ticket deleted"});
+
+    } catch (error){
+        console.log("error"+ error);
+        return res.status(500).json({message: "Internal server errror"});
+    }
+};
+
+export default ticketsControllers;

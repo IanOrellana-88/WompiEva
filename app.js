@@ -5,6 +5,9 @@ import clientsController from "./controllers/clientsController.js";
 import clientsRegister from "./controllers/clientsRegister.js";
 import clientsLogin from "./controllers/clientsLogin.js";
 import adminsController from "./controllers/adminsController.js";
+import adminsRegister from "./controllers/adminsRegister.js";
+import adminsLogin from "./controllers/adminsLogin.js";
+import ticketsController from "./controllers/ticketsController.js";
 
 
 const app = express ();
@@ -25,6 +28,7 @@ app.use("api/login",clientsLogin);
 app.use("api/admins", adminsController)
 app.use("api/registerAdmins", adminsRegister);
 app.use("api/loginAdmins", adminsLogin);
+app.use("api/tickets", ticketsController);
 
 
 
